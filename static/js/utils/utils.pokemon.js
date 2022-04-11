@@ -1,4 +1,7 @@
 /*
+globals serverSettings, version, i18n
+*/
+/*
 exported genderClasses, getIvsPercentage, getIvsPercentageCssColor,
 getMoveName, getMoveType, getMoveTypeNoI8ln, getPokemonGen, getPokemonIds,
 getPokemonLevel, getPokemonNameWithForm, getPokemonRarity,
@@ -25,7 +28,7 @@ function initPokemonData() {
     return $.getJSON('static/dist/data/pokemon.min.json?v=' + version).done(function (data) {
         pokemonData = data
         $.each(pokemonData, function (id, value) {
-            let gen
+            let gen = 1
             if (id <= 151) {
                 gen = 1
             } else if (id <= 251) {
@@ -82,9 +85,7 @@ function getPokemonIds() {
         for (let i = 1; i <= availablePokemonCount; i++) {
             pokemonIds.add(i)
         }
-        // Gen 7 and 8.
-        pokemonIds.add(808)
-        pokemonIds.add(809)
+        // Gen 8.
         pokemonIds.add(819)
         pokemonIds.add(820)
         pokemonIds.add(831)
@@ -203,8 +204,12 @@ function getPokemonMapIconUrl(pokemon, generateImages) {
     const costumeParam = pokemon.costume ? `&costume=${pokemon.costume}` : ''
     const evolutionParam = pokemon.evolution ? `&evolution=${pokemon.evolution}` : ''
     const weatherParam = pokemon.weather_boosted_condition ? `&weather=${pokemon.weather_boosted_condition}` : ''
-
-    return `pkm_img?pkm=${pokemon.pokemon_id}${genderParam}${formParam}${costumeParam}${evolutionParam}${weatherParam}`
+    let perfectParam = ''
+    if (serverSettings.perfectCircle) {
+        const ivs = pokemon.individual_attack ? getIvsPercentage(pokemon.individual_attack, pokemon.individual_defense, pokemon.individual_stamina) : 0
+        perfectParam = ivs === 100 ? '&perfect=1' : ''
+    }
+    return `pkm_img?pkm=${pokemon.pokemon_id}${genderParam}${formParam}${costumeParam}${evolutionParam}${weatherParam}${perfectParam}`
 }
 
 function getIvsPercentage(atk, def, sta) {
@@ -227,6 +232,9 @@ function getIvsPercentageCssColor(ivs) {
 }
 
 function getPokemonLevel(cpMultiplier) {
+    if (!cpMultiplier) {
+        return 0
+    }
     if (cpMultiplier < 0.734) {
         var pokemonLevel = 58.35178527 * cpMultiplier * cpMultiplier - 2.838007664 * cpMultiplier + 0.8539209906
     } else {
