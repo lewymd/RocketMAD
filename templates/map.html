@@ -113,7 +113,7 @@
               <li><a href="{{ donate_url }}" class="hide-on-small-only" title="{{ i18n('Donate') }}" target="_blank"><i class="material-icons">attach_money</i></a></li>
               {% endif %}
               {% if madmin_url %}
-              <li><a href="{{ madmin_url }}" class="hide-on-small-only" title="MADmin" target="_blank"><i class="material-icons">phone_android</i></a></li>
+              <li><a href="{{ madmin_url }}" class="hide-on-small-only" title="Manage Bot" target="_blank"><i class="material-icons">phone_android</i></a></li>
               {% endif %}
               {% if admin %}
               <li><a href="{{ url_for('admin_page') }}" class="hide-on-small-only" title="Admin"><i class="material-icons">dashboard</i></a></li>
@@ -155,7 +155,7 @@
       {% endif %}
       {% if madmin_url %}
       <li class="divider" tabindex="-1"></li>
-      <li><a href="{{ madmin_url }}" target="_blank"><i class="material-icons">phone_android</i>MADmin</a></li>
+      <li><a href="{{ madmin_url }}" target="_blank"><i class="material-icons">phone_android</i>Manage Bot</a></li>
       {% endif %}
       {% if donate_url or patreon_url %}
       <li class="divider" tabindex="-1"></li>
